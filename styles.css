@@ -300,6 +300,40 @@ h2 {
   line-height: 1.28;
 }
 
+.text-answer {
+  display: grid;
+  gap: 10px;
+  padding: 14px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #fbfcfe;
+}
+
+.text-answer span {
+  color: var(--muted);
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.text-answer textarea {
+  width: 100%;
+  min-height: 136px;
+  resize: vertical;
+  padding: 12px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  color: var(--ink);
+  background: #ffffff;
+  line-height: 1.4;
+}
+
+.answer-line {
+  display: block;
+  margin-top: 6px;
+  color: #253044;
+  font-weight: 650;
+}
+
 .match-group {
   display: grid;
   gap: 10px;
