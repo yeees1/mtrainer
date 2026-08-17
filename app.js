@@ -2079,27 +2079,42 @@ const deepFacts = [
 ];
 
 function createDeepQuestions(facts) {
-  return selectDeepFacts(facts).flatMap((fact) => {
+  const selectedFacts = selectDeepFacts(facts);
+  const existingTexts = new Set(questions.map((q) => q.text));
+  const textQuestions = selectedFacts.map((fact) => {
     const explanation = fact.h || fact.a;
-    return [
-      {
-        category: fact.c,
-        topic: fact.t,
-        type: "text",
-        text: fact.q,
-        answerText: fact.a,
-        explanation,
-      },
-      {
-        category: fact.c,
-        topic: fact.t,
-        text: fact.q,
-        options: buildFactOptions(fact, facts),
-        answer: 0,
-        explanation: `${fact.a} ${explanation}`,
-      },
-    ];
+    return {
+      category: fact.c,
+      topic: fact.t,
+      type: "text",
+      text: makeTextQuestionText(fact, existingTexts),
+      answerText: fact.a,
+      explanation,
+    };
   });
+  const choiceQuestions = selectedFacts.map((fact) => {
+    const explanation = fact.h || fact.a;
+    return {
+      category: fact.c,
+      topic: fact.t,
+      text: makeChoiceQuestionText(fact),
+      options: buildFactOptions(fact, facts),
+      answer: 0,
+      explanation: `${fact.a} ${explanation}`,
+    };
+  });
+  return [...textQuestions, ...choiceQuestions];
+}
+
+function makeTextQuestionText(fact, existingTexts) {
+  if (existingTexts.has(fact.q)) {
+    return `Ответьте без вариантов: ${fact.q}`;
+  }
+  return fact.q;
+}
+
+function makeChoiceQuestionText(fact) {
+  return `Выберите верный ответ по вопросу: ${fact.q}`;
 }
 
 function selectDeepFacts(facts) {
@@ -2521,7 +2536,7 @@ function renderBank() {
       : `${q.options[q.answer]}. ${q.explanation || ""}`;
     item.innerHTML = `
       <summary>
-        <span class="bank-meta">${q.bankIndex}. ${getCategoryTitle(q.category)} / ${q.topic}</span>
+        <span class="bank-meta">${q.bankIndex}. ${getCategoryTitle(q.category)} / ${q.topic} / ${getTypeTitle(q)}</span>
         <span>${q.text}</span>
       </summary>
       <div class="bank-answer">
@@ -2536,4 +2551,10 @@ function renderBank() {
 function getCategoryTitle(category) {
   if (category === "generalOnly") return "Общее";
   return sectionTitles[category] || "Общее";
+}
+
+function getTypeTitle(q) {
+  if (q.type === "admin") return "Фото";
+  if (q.type === "text") return "Ручной ответ";
+  return "Выбор ответа";
 }
