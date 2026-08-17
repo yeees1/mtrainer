@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <meta name="theme-color" content="#111827">
+    <title>Тренажер ШК РТУ МИРЭА</title>
+    <meta name="description" content="Мобильный тренажер вопросов по истории, внеучебке, администрации и документации РТУ МИРЭА.">
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+    <main class="shell">
+      <header class="topbar">
+        <div>
+          <p class="eyebrow">ШК РТУ МИРЭА</p>
+          <h1>Тренажер куратора</h1>
+        </div>
+        <button class="icon-button" id="resetBtn" type="button" aria-label="Сбросить прогресс" title="Сбросить">
+          <span aria-hidden="true">↻</span>
+        </button>
+      </header>
+
+      <nav class="tabs" aria-label="Разделы">
+        <button class="tab is-active" type="button" data-tab="history">История</button>
+        <button class="tab" type="button" data-tab="student">Внеучебка</button>
+        <button class="tab" type="button" data-tab="admin">Администрация</button>
+        <button class="tab" type="button" data-tab="docs">Документация</button>
+        <button class="tab" type="button" data-tab="general">Общее</button>
+        <button class="tab" type="button" data-tab="bank">Банк</button>
+      </nav>
+
+      <section class="stats" aria-live="polite">
+        <div>
+          <span class="stat-label">Раздел</span>
+          <strong id="sectionName">История</strong>
+        </div>
+        <div>
+          <span class="stat-label">Верно</span>
+          <strong id="scoreText">0/0</strong>
+        </div>
+        <div>
+          <span class="stat-label">Попытка</span>
+          <strong id="counterText">1/1</strong>
+        </div>
+      </section>
+
+      <section class="quiz-card" id="quizCard">
+        <div class="question-meta">
+          <span id="topicLabel">История</span>
+          <span id="questionType">Выбор ответа</span>
+        </div>
+        <h2 id="questionText"></h2>
+        <form id="answerForm" class="answer-form"></form>
+        <div class="result" id="resultBox" hidden></div>
+        <div class="actions">
+          <button class="primary" id="checkBtn" type="button">Проверить</button>
+          <button class="secondary" id="nextBtn" type="button" hidden>Далее</button>
+        </div>
+      </section>
+
+      <section class="bank-card" id="bankCard" hidden>
+        <div class="bank-toolbar">
+          <h2>Банк вопросов</h2>
+          <select id="bankFilter" aria-label="Фильтр банка вопросов">
+            <option value="all">Все разделы</option>
+            <option value="history">История</option>
+            <option value="student">Внеучебка</option>
+            <option value="admin">Администрация</option>
+            <option value="docs">Документация</option>
+            <option value="generalOnly">Общее</option>
+          </select>
+        </div>
+        <p class="bank-count" id="bankCount"></p>
+        <div class="bank-list" id="bankList"></div>
+      </section>
+    </main>
+
+    <script src="app.js"></script>
+  </body>
+</html>
