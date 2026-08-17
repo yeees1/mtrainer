@@ -1911,6 +1911,58 @@ adminPeople.forEach((person, index) => {
   });
 });
 
+const sourceByTopic = {
+  "admin|Администрация": "Общая_методичка.pdf, стр. 40-47; дополнено приложенным текстом по администрации",
+  "history|История МИРЭА": "Общая_методичка.pdf, стр. 4-8",
+  "history|История МГУПИ": "Общая_методичка.pdf, стр. 10-13",
+  "history|История МИТХТ": "Общая_методичка.pdf, стр. 15-18",
+  "history|История КПК": "Общая_методичка.pdf, стр. 19-22",
+  "history|Филиал во Фрязино": "Общая_методичка.pdf, стр. 24-25",
+  "history|Филиал в Ставрополе": "Общая_методичка.pdf, стр. 27-28",
+  "history|История РТУ МИРЭА": "Общая_методичка.pdf, стр. 30-37; отдельные уточнения из приложенного текста",
+  "history|Музеи": "Общая_методичка.pdf, стр. 38",
+  "student|УВиСР": "Общая_методичка.pdf, стр. 89",
+  "student|Студенческий союз": "Общая_методичка.pdf, стр. 91-98",
+  "student|Структура": "Общая_методичка.pdf, стр. 133",
+  "student|Структура Студсоюза": "Общая_методичка.pdf, стр. 99-100, 133",
+  "student|Бюро Комитета": "Общая_методичка.pdf, стр. 101-104",
+  "student|Аппарат Студсоюза": "Общая_методичка.pdf, стр. 105",
+  "student|Внеучебная деятельность": "Общая_методичка.pdf, стр. 85-89",
+  "student|Факел": "Общая_методичка.pdf, стр. 107, 149-150",
+  "student|Медиа": "Общая_методичка.pdf, стр. 108",
+  "student|Досуговый центр": "Общая_методичка.pdf, стр. 109",
+  "student|Спорт": "Общая_методичка.pdf, стр. 115-116",
+  "student|Неформальное образование": "Общая_методичка.pdf, стр. 117",
+  "student|Общий отдел": "Общая_методичка.pdf, стр. 118",
+  "student|Волонтерский центр": "Общая_методичка.pdf, стр. 119",
+  "student|Общежития": "Общая_методичка.pdf, стр. 120",
+  "student|ЦСО ВСКС": "Общая_методичка.pdf, стр. 126",
+  "student|Вектор": "Общая_методичка.pdf, стр. 127",
+  "student|Атмосфера": "Общая_методичка.pdf, стр. 128",
+  "student|Отделения": "Общая_методичка.pdf, стр. 132",
+  "student|Достижения": "Общая_методичка.pdf, стр. 134-135",
+  "student|Кураторство": "Общая_методичка.pdf, стр. 141-146",
+  "student|Семь правил куратора": "Общая_методичка.pdf, стр. 147; также приложенный текст",
+  "student|Деловая игра": "Общая_методичка.pdf, стр. 139, 164-179",
+  "student|Социальные сети": "Общая_методичка.pdf, стр. 206-207",
+  "student|Информация": "Общая_методичка.pdf, стр. 209-212",
+  "student|Анкетирование": "Общая_методичка.pdf, стр. 214-215",
+  "docs|Комплектация": "Памаятка доки.pdf, стр. 1",
+  "docs|Правила заполнения": "Памаятка доки.pdf, стр. 1",
+  "docs|Документация": "Памаятка доки.pdf, стр. 1",
+  "docs|Документация на ДИ": "Памаятка доки.pdf, стр. 1",
+  "docs|ЛКС": "Памаятка доки.pdf, стр. 1",
+  "docs|Согласия": "Памаятка доки.pdf, стр. 1",
+  "docs|ССМ и Профсоюз": "Памаятка доки.pdf, стр. 1",
+  "docs|Ведомость": "Памаятка доки.pdf, стр. 1-2",
+  "docs|Справка 086-у": "Памаятка доки.pdf, стр. 2",
+  "generalOnly|Учебно-научные подразделения": "Общая_методичка.pdf, стр. 49-54; отдельные уточнения из приложенного текста",
+  "generalOnly|Дополнительное образование": "Общая_методичка.pdf, стр. 68-77; дополнено приложенным текстом",
+  "generalOnly|Преимущества университета": "Общая_методичка.pdf, стр. 79-83; дополнено приложенным текстом",
+  "generalOnly|ИМО": "приложенный текст; отдельной страницы PDF для этих уточнений нет",
+  "generalOnly|БРС": "приложенный текст; отдельной страницы PDF для этого блока нет",
+};
+
 const state = {
   tab: "history",
   current: {},
@@ -2095,9 +2147,9 @@ function checkAnswer() {
   if (isCorrect) state.score[state.tab] += 1;
 
   if (isCorrect) {
-    showMessage(`<strong>Верно</strong>${explanation || getCorrectAnswerText(q)}`, true);
+    showMessage(`<strong>Верно</strong>${withSource(q, explanation || getCorrectAnswerText(q))}`, true);
   } else {
-    showMessage(`<strong>Неверно</strong>${explanation}`, false);
+    showMessage(`<strong>Неверно</strong>${withSource(q, explanation)}`, false);
   }
 
   checkBtn.hidden = true;
@@ -2164,6 +2216,15 @@ function getCorrectAnswerText(q) {
   return `Правильный ответ: ${q.options[q.answer]}.`;
 }
 
+function withSource(q, text) {
+  const source = getSourceText(q);
+  return `${text}<span class="source-note">Где найти: ${escapeHtml(source)}</span>`;
+}
+
+function getSourceText(q) {
+  return sourceByTopic[`${q.category}|${q.topic}`] || "источник в предоставленных материалах";
+}
+
 function getBankItems() {
   return questions.map((q, index) => ({ ...q, bankIndex: index + 1 }));
 }
@@ -2194,7 +2255,10 @@ function renderBank() {
         <span class="bank-meta">${q.bankIndex}. ${getCategoryTitle(q.category)} / ${q.topic}</span>
         <span>${q.text}</span>
       </summary>
-      <div class="bank-answer"><strong>Ответ:</strong> ${escapeHtml(answer)}</div>
+      <div class="bank-answer">
+        <strong>Ответ:</strong> ${escapeHtml(answer)}
+        <span class="source-note">Где найти: ${escapeHtml(getSourceText(q))}</span>
+      </div>
     `;
     bankList.append(item);
   });

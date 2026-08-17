@@ -356,6 +356,14 @@ h2 {
   color: var(--good);
 }
 
+.source-note {
+  display: block;
+  margin-top: 8px;
+  color: #536176;
+  font-size: 13px;
+  font-weight: 750;
+}
+
 .actions {
   display: grid;
   grid-template-columns: 1fr 1fr;

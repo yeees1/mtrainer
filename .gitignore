@@ -1,0 +1,35 @@
+# macOS / editor junk
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+
+# Local dependency/build folders, if they appear later
+node_modules/
+dist/
+build/
+.vite/
+.next/
+
+# Temporary extraction/rendering files
+tmp_pdf_text/
+tmp_pdf_pages/
+
+# Source materials and generated working files not needed for GitHub Pages
+*.pdf
+*.pptx
+*.docx
+~$*
+build_docx/
+
+# Raw imported photos; the site only needs assets/
+*.jpg
+*.jpeg
+*.JPG
+*.JPEG
+*.png
+*.PNG
+
+# Keep published site assets
+!assets/
+!assets/**
